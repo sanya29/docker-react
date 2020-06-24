@@ -1,6 +1,6 @@
-FROM node:alpine as builder 
+FROM node:alpine 
 WORKDIR '/app'
-COPY package.json .
+COPY package*.json ./
 RUN npm install
 COPY . . 
 # don't need volumes because we're not concerned with immediately reflecting changed files
@@ -10,4 +10,4 @@ RUN npm run build
 
 FROM nginx 
 EXPOSE 80
-COPY --from=builder /app/build /usr/share/nginx/html
+COPY --from=0 /app/build /usr/share/nginx/html
